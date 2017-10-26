@@ -1,4 +1,4 @@
-** RSHELL-PICO-DE-GALLO **
+**RSHELL-PICO-DE-GALLO**
 
 
 ## List of known bugs:
