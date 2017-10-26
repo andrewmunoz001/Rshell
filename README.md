@@ -1,1 +1,6 @@
-# RSHELL-PICO-DE-GALLO
+** RSHELL-PICO-DE-GALLO **
+
+
+## List of known bugs:
+
+No program to debug.
