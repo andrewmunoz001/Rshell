@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 class Parse {
     private:
         vector<char*> argList;
