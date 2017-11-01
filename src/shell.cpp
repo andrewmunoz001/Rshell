@@ -24,8 +24,13 @@ int main(int argc, char* argv[]){
         for(tokenizer::iterator it = tokens.begin();
                 it != tokens.end();
                 it++){
-            vStr.push_back(*it); // seperates each token into a vector of strings
-            // this is pushback is temporary until a better way is found!!!!!
+            string temp = *it;
+            if (temp.back() == ';'){       // seperates semicolon from string
+                vStr.push_back(temp.substr(0,temp.size() - 1));  
+                vStr.push_back(temp.substr(temp.size()-1, temp.size()));
+            }
+            else
+                vStr.push_back(temp); // seperates each token into a vector of strings
         }
         
         if (vStr.size() == 0)      // if nothing was entered
