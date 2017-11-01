@@ -45,6 +45,7 @@ int main(int argc, char* argv[]){
         for (unsigned i = 0; i < vStr.size(); i++){
             cout << "Token " << i << ": " << vStr.at(i) << endl;
         }
+        execute(vStr);
 
 
     }
@@ -55,7 +56,7 @@ int main(int argc, char* argv[]){
 void execute(vector<string> &vStr){
     char* args[2];
     string temp = "ls";
-    args[0] = (char*)temp.c_str();
+    args[0] = (char*)vStr.at(0).c_str();
     args[1] = NULL;
 
     pid_t pid = fork();                    // fork value set to pid, of type pid_t
