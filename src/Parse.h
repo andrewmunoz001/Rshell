@@ -2,14 +2,14 @@
 #define PARSE_H
 #include <sstream>
 #include <string>
-#include <vector>
+#include <queue>
 #include "command.h"
 
 using namespace std;
 
 class Parse {
     private:
-        vector<Command> commandList;
+        queue<Command> commandList;
     public:
         Parse();
         Parse(vector<string> &vStr);
