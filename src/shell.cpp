@@ -41,13 +41,9 @@ int main(int argc, char* argv[]){
             continue;              // do a new loop
         if (vStr.at(0) == "exit")
             return 0;             // exit function... please change
-       
-        cout << "Tokens in array:" << endl;
-        for (unsigned i = 0; i < vStr.size(); i++){
-            cout << "Token " << i << ": " << vStr.at(i) << endl;
-        }
-        execute(vStr);
 
+        Parse parseobject(vStr);
+        parseobject.print();
 
     }
     return 0;

@@ -8,23 +8,19 @@ Parse::Parse(vector<string> &vStr){
 	vector<string> subVector;
 	string connector;
 	for (unsigned i = 0; i < vStr.size(); ++i) {
-		if (vStr.at(i) == "||" || vStr.at(i) == "&&") {
-			connector = vStr.at(i);
-			parsedQueue.push_back(Command(subVector, connector));
-			subVector.clear();
-			connector = "";
-		}
-		else if (vStr.at(i).at(vStr.at(i).size() - 1) == ';') {
-			subVector.push_back(vStr.at(i).substr(0, vStr.at(i).size() - 1));
-			connector = ';';
-			parsedQueue.push_back(Command(subVector, connector));
-			subVector.clear();
-			connector = "";
+		if (vStr.at(i) != "||" || vStr.at(i) != "&&" || vStr.at(i) != ";") {
+			subVector.push_back(vStr.at(i));
 		}
 		else {
-			subVector.push_back(vStr.at(i);
+            connector = vStr.at(i);
+			parsedQueue.push(Command(subVector, connector));
+			subVector.clear();
+			connector = "";
 		}
 	}
-	
 	commandList = parsedQueue;
+}
+
+void Parse::print(){
+    commandList.front().showCommand();
 }

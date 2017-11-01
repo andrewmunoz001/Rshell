@@ -13,6 +13,7 @@ class Parse {
     public:
         Parse();
         Parse(vector<string> &vStr);
+        void print();
 };
 
 
