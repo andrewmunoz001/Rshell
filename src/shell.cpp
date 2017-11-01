@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
         for(tokenizer::iterator it = tokens.begin();
                 it != tokens.end();
                 it++){
-            vStr.push_back(*it);         // seperates each token into a vector of strings
+            vStr.push_back(*it); // seperates each token into a vector of strings
             // this is pushback is temporary until a better way is found!!!!!
         }
         
@@ -32,7 +32,12 @@ int main(int argc, char* argv[]){
             continue;              // do a new loop
         if (vStr.at(0) == "exit")
             return 0;             // exit function... please change
-        
+       
+        cout << "Tokens in array:" << endl;
+        for (unsigned i = 0; i < vStr.size(); i++){
+            cout << "Token " << i << ": " << vStr.at(i) << endl;
+        }
+
 
     }
 
