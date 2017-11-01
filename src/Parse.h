@@ -3,12 +3,13 @@
 
 #include <string>
 #include <vector>
+#include "command.h"
 
 using namespace std;
 
 class Parse {
     private:
-        vector<char*> argList;
+        vector<Command> commandList;
     public:
         Parse();
         Parse(vector<string> &vStr);
