@@ -14,6 +14,7 @@ class Command {
         Command();   
         // Connector will be initilized to empty string, unless a connector is passed through
         Command(const vector<string>& iVector, const string& con);
+        vector<string> getCmdStr();     // returns the vector of commands
         void showCommand();     // shows whats in the command object, used for testing
 };
 

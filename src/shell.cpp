@@ -11,7 +11,7 @@
 using namespace boost;
 using namespace std;
 
-void execute(vector<string> &vStr);
+void execute(Command& );
 
 int main(int argc, char* argv[]){
     while(1){
@@ -42,19 +42,23 @@ int main(int argc, char* argv[]){
         if (vStr.at(0) == "exit")
             return 0;             // exit function... please change
 
-        Parse parseobject(vStr);
-        parseobject.print();
+        string testConnector = "";
+        Command testCommand(vStr,testConnector);
+        execute(testCommand);
 
     }
     return 0;
 }
 
 
-void execute(vector<string> &vStr){
-    char* args[2];
-    string temp = "ls";
-    args[0] = (char*)vStr.at(0).c_str();
-    args[1] = NULL;
+void execute(Command& inCmd){
+    vector<string> execVector = inCmd.getCmdStr();
+    int elements = execVector.size();
+    char* args[elements + 1];       // needs 1 extra for the NULL char*
+    for (unsigned i = 0; i < elements; i++){
+        args[i] = (char*)(execVector.at(i).c_str());
+    }
+    args[elements] = NULL;         // make sure last element is set to null
 
     pid_t pid = fork();                    // fork value set to pid, of type pid_t
 

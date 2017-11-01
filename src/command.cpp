@@ -14,6 +14,11 @@ Command::Command(const vector<string>& iVector, const string& con){
     connectorType = con;         // sets the connector type for the command
 }
 
+vector<string> Command::getCmdStr(){
+    vector<string> rStr = cmdStr;
+    return rStr;
+}
+
 void Command::showCommand(){
     cout << endl << "arg list: ";
     for (unsigned i = 0; i < cmdStr.size(); i++){
