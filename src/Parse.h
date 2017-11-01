@@ -2,14 +2,14 @@
 #define PARSE_H
 #include <sstream>
 #include <string>
+#include <vector>
 
-class Parse() {
+class Parse {
     private:
         vector<char*> argList;
     public:
-        Parse(vector<string> &vStr) {
-		
-	}
+        Parse();
+        Parse(vector<string> &vStr);
 };
 
 
