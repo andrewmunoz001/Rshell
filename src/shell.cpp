@@ -6,6 +6,7 @@
 #include <boost/tokenizer.hpp>
 #include <stdio.h>
 // #include "Parse.h"
+#include "command.h"
 
 using namespace boost;
 using namespace std;
