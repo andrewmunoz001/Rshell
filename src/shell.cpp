@@ -5,6 +5,7 @@
 #include <vector>
 #include <boost/tokenizer.hpp>
 #include <stdio.h>
+#include "Parse.h"
 
 using namespace boost;
 using namespace std;
