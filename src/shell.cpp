@@ -5,10 +5,12 @@
 #include <vector>
 #include <boost/tokenizer.hpp>
 #include <stdio.h>
-#include "Parse.h"
+// #include "Parse.h"
 
 using namespace boost;
 using namespace std;
+
+void execute(vector<string> &vStr);
 
 int main(int argc, char* argv[]){
     while(1){
@@ -46,11 +48,28 @@ int main(int argc, char* argv[]){
 
 
     }
-
-
-
-
-
-
     return 0;
+}
+
+
+void execute(vector<string> &vStr){
+    char* args[2];
+    string temp = "ls";
+    args[0] = (char*)temp.c_str();
+    args[1] = NULL;
+
+    pid_t pid = fork();                    // fork value set to pid, of type pid_t
+
+    if (pid < 0){   // if pid < 0, error in forking
+        perror("ForkFailure");
+    }
+    if (pid == 0){  // if child process
+        if (execvp(args[0], args) == -1){     // execvp(char* cmd, char* arg[])
+        perror ("exec");
+        }
+        exit(1);
+    }
+    if (pid > 0){    // parent process
+        wait(NULL);
+    }
 }
