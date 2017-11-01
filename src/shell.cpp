@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
                 it != tokens.end();
                 it++){
             string temp = *it;
-            if (temp.back() == ';'){       // seperates semicolon from string
+            if (temp.at(temp.size() - 1) == ';'){       // seperates semicolon from string
                 vStr.push_back(temp.substr(0,temp.size() - 1));  
                 vStr.push_back(temp.substr(temp.size()-1, temp.size()));
             }
