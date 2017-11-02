@@ -24,7 +24,8 @@ int main(int argc, char* argv[]){
 
         
             Parse parsedLine(strInput);
-            parsedLine.print();
+            queue<Command> shellCmd = parsedLine.getCommandList();
+            shellCmd.front().showCommand();
 
             // THIS IS ONLY FOR TESTING
             //string testConnector = "";

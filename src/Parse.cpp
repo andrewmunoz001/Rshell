@@ -22,10 +22,13 @@ queue<Command> Parse::getCommandList(){
 	queue<Command> parsedQueue;
 	vector<string> subVector;
 	string connector;
+
 	for (unsigned i = 0; i < vLineInput.size(); ++i) {
+
 		if (vLineInput.at(i) != "||" || vLineInput.at(i) != "&&" || vLineInput.at(i) != ";") {
 			subVector.push_back(vLineInput.at(i));
 		}
+
 		else {
             connector = vLineInput.at(i);
 			parsedQueue.push(Command(subVector, connector));
@@ -33,6 +36,11 @@ queue<Command> Parse::getCommandList(){
 			connector = "";
 		}
 	}
+    /*if (subVector.size() != 0){  // if subVector is still filled
+        connector = "";                   // it has no connector since its last/ only cmd
+        parsedQueue.push(Command(subVector, connector));   // add it to the queue
+        
+    }*/
 	return parsedQueue;
 }
 
