@@ -39,9 +39,8 @@ int main(int argc, char* argv[]){
         
         if (vStr.size() == 0)      // if nothing was entered
             continue;              // do a new loop
-        if (vStr.at(0) == "exit")
-            return 0;             // exit function... please change
 
+        // THIS IS ONLY FOR TESTING
         string testConnector = "";
         Command testCommand(vStr,testConnector);
         execute(testCommand);
@@ -55,10 +54,22 @@ void execute(Command& inCmd){
     vector<string> execVector = inCmd.getCmdStr();
     int elements = execVector.size();
     char* args[elements + 1];       // needs 1 extra for the NULL char*
-    for (unsigned i = 0; i < elements; i++){
+
+    // Exit function
+    if (execVector.at(0) == "exit"){
+        if (execVector.size() != 1){
+            printf("rshell: Error, too many arguments for exit!\n");
+            return;
+        }
+        else
+            exit(0);       // terminate normally    
+    }
+    
+    for (unsigned i = 0; i < elements; i++){     // fill up char array with the arguments
         args[i] = (char*)(execVector.at(i).c_str());
     }
     args[elements] = NULL;         // make sure last element is set to null
+
 
     pid_t pid = fork();                    // fork value set to pid, of type pid_t
 
