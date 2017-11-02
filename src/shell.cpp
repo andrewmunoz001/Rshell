@@ -14,7 +14,7 @@ using namespace std;
 void execute(Command& );
 
 int main(int argc, char* argv[]){
-    if (argc == 1){         // if shell wasnt opened with arguments
+
         while(1){
             typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
             boost::char_separator<char> sep(" ");          // only seperate by spaces
@@ -46,7 +46,6 @@ int main(int argc, char* argv[]){
             Command testCommand(vStr,testConnector);
             execute(testCommand);
         }
-    }
     
     return 0;
 }
