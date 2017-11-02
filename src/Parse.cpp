@@ -1,9 +1,19 @@
 #include "Parse.h"
+#include <string>
 
 Parse::Parse(const string& strUnparsed){
+	//deletes # and anything past it
+	string stringToParse = strUnparsed;
+	for (unsigned i = 0; i < strUnparsed.size(); ++i) {
+		if (strUnparsed.at(i) == '#') {
+			stringToParse = strUnparsed.substr(0, i);
+			break;
+		}
+	}
+
     typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep(" "); // only seperate by spaces
-    tokenizer tokens(strUnparsed, sep);      // seperate unparsed string into tokens
+    tokenizer tokens(stringToParse, sep);      // seperate unparsed string into tokens
 
     for (tokenizer::iterator it = tokens.begin();
             it != tokens.end();
@@ -24,7 +34,6 @@ queue<Command> Parse::getCommandList(){
 	string connector;
 
 	for (unsigned i = 0; i < vLineInput.size(); ++i) {
-
 		if (vLineInput.at(i) == "||" || vLineInput.at(i) == "&&" || vLineInput.at(i) == ";") {
 			connector = vLineInput.at(i);
 			parsedQueue.push(Command(subVector, connector));
