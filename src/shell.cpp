@@ -24,6 +24,9 @@ int main(int argc, char* argv[]){
 
         
             Parse parsedLine(strInput);
+            printf("TOKEN LIST \n");
+            parsedLine.print();
+            printf("\n\n");
             queue<Command> shellCmd = parsedLine.getCommandList();
             shellCmd.front().showCommand();
 
