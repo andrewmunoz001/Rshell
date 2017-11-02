@@ -5,7 +5,6 @@
 using namespace std;
 
 Command::Command(){
-    cmdStr;
     connectorType = "";
 }
 

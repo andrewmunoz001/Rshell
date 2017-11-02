@@ -14,46 +14,47 @@ using namespace std;
 void execute(Command& );
 
 int main(int argc, char* argv[]){
-    while(1){
-        typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-        boost::char_separator<char> sep(" ");          // only seperate by spaces
+    if (argc == 1){         // if shell wasnt opened with arguments
+        while(1){
+            typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+            boost::char_separator<char> sep(" ");          // only seperate by spaces
 
-        string strInput;     // input from getline
-        vector<string> vStr;
+            string strInput;     // input from getline
+            vector<string> vStr;
 
-        printf("rshell beta $ ");
-        getline(cin, strInput);           // get user input, put in str
-        tokenizer tokens(strInput, sep);  // seperate strInput into tokens
+            printf("rshell beta $ ");
+            getline(cin, strInput);           // get user input, put in str
+            tokenizer tokens(strInput, sep);  // seperate strInput into tokens
 
-        for(tokenizer::iterator it = tokens.begin();
+            for(tokenizer::iterator it = tokens.begin();
                 it != tokens.end();
                 it++){
-            string temp = *it;
-            if (temp.at(temp.size() - 1) == ';'){       // seperates semicolon from string
-                vStr.push_back(temp.substr(0,temp.size() - 1));  
-                vStr.push_back(temp.substr(temp.size()-1, temp.size()));
+                string temp = *it;
+                if (temp.at(temp.size() - 1) == ';'){       // seperates semicolon from string
+                    vStr.push_back(temp.substr(0,temp.size() - 1));  
+                    vStr.push_back(temp.substr(temp.size()-1, temp.size()));
+                }
+                else
+                    vStr.push_back(temp); // seperates each token into a vector of strings
             }
-            else
-                vStr.push_back(temp); // seperates each token into a vector of strings
-        }
         
-        if (vStr.size() == 0)      // if nothing was entered
-            continue;              // do a new loop
+            if (vStr.size() == 0)      // if nothing was entered
+                continue;              // do a new loop
 
-        // THIS IS ONLY FOR TESTING
-        string testConnector = "";
-        Command testCommand(vStr,testConnector);
-        execute(testCommand);
-
+            // THIS IS ONLY FOR TESTING
+            string testConnector = "";
+            Command testCommand(vStr,testConnector);
+            execute(testCommand);
+        }
     }
+    
     return 0;
 }
 
 
 void execute(Command& inCmd){
     vector<string> execVector = inCmd.getCmdStr();
-    int elements = execVector.size();
-    char* args[elements + 1];       // needs 1 extra for the NULL char*
+    unsigned elements = execVector.size();
 
     // Exit function
     if (execVector.at(0) == "exit"){
@@ -65,6 +66,8 @@ void execute(Command& inCmd){
             exit(0);       // terminate normally    
     }
     
+    char** args = new char*[elements + 1];       // needs 1 extra for the NULL char*
+
     for (unsigned i = 0; i < elements; i++){     // fill up char array with the arguments
         args[i] = (char*)(execVector.at(i).c_str());
     }
@@ -85,4 +88,5 @@ void execute(Command& inCmd){
     if (pid > 0){    // parent process
         wait(NULL);
     }
+    delete [] args;       // make sure to deallocate the memory
 }
