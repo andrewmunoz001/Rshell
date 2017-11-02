@@ -16,35 +16,20 @@ void execute(Command& );
 int main(int argc, char* argv[]){
 
         while(1){
-            typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-            boost::char_separator<char> sep(" ");          // only seperate by spaces
-
             string strInput;     // input from getline
-            vector<string> vStr;
 
             printf("rshell beta $ ");
             getline(cin, strInput);           // get user input, put in str
-            tokenizer tokens(strInput, sep);  // seperate strInput into tokens
 
-            for(tokenizer::iterator it = tokens.begin();
-                it != tokens.end();
-                it++){
-                string temp = *it;
-                if (temp.at(temp.size() - 1) == ';'){       // seperates semicolon from string
-                    vStr.push_back(temp.substr(0,temp.size() - 1));  
-                    vStr.push_back(temp.substr(temp.size()-1, temp.size()));
-                }
-                else
-                    vStr.push_back(temp); // seperates each token into a vector of strings
-            }
+
         
-            if (vStr.size() == 0)      // if nothing was entered
-                continue;              // do a new loop
+            Parse parsedLine(strInput);
+            parsedLine.print();
 
             // THIS IS ONLY FOR TESTING
-            string testConnector = "";
-            Command testCommand(vStr,testConnector);
-            execute(testCommand);
+            //string testConnector = "";
+            //Command testCommand(vStr,testConnector);
+            //execute(testCommand);
         }
     
     return 0;
