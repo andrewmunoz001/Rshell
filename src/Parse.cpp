@@ -30,17 +30,17 @@ queue<Command> Parse::getCommandList(){
 		}
 
 		else {
-            connector = vLineInput.at(i);
+			connector = vLineInput.at(i);
 			parsedQueue.push(Command(subVector, connector));
 			subVector.clear();
 			connector = "";
 		}
 	}
-    /*if (subVector.size() != 0){  // if subVector is still filled
-        connector = "";                   // it has no connector since its last/ only cmd
-        parsedQueue.push(Command(subVector, connector));   // add it to the queue
-        
-    }*/
+	
+	if (!subVector.empty()){  // if subVector is still filled
+        	connector = "";                   // it has no connector since its last/ only cmd
+		parsedQueue.push(Command(subVector, connector));   // add it to the queue
+	}
 	return parsedQueue;
 }
 
