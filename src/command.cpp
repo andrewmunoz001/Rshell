@@ -82,7 +82,7 @@ bool Command::executeNext(){
 void Command::showCommand(){
     cout << endl << "arg list: ";
     for (unsigned i = 0; i < cmdStr.size(); i++){
-        cout << cmdStr.at(i);
+        cout << cmdStr.at(i) << " ";
     }
     cout << endl << "connector: " << connectorType << endl;
 }
