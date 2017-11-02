@@ -11,7 +11,6 @@ class Command {
         vector<string> cmdStr;
         string connectorType;
     public:
-        Command();   
         // Connector will be initilized to empty string, unless a connector is passed through
         Command(const vector<string>& iVector, const string& con);
         vector<string> getCmdStr();     // returns the vector of commands

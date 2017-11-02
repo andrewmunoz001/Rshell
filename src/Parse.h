@@ -18,7 +18,12 @@ class Parse {
     public:
         // takes input, which is unparsed, and parses it 
         Parse(const string& strUnparsed);
-        Parse(vector<string> &vStr);
+
+        // Creates a queue of commands from the parsed vLineInput, and returns it
+        queue<Command> getCommandList();
+
+
+        //tests if tokenizer is funtioning
         void print();
 };
 

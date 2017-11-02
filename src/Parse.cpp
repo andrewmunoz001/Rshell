@@ -18,22 +18,22 @@ Parse::Parse(const string& strUnparsed){
     }
 }
 
-Parse::Parse(vector<string> &vStr){
+queue<Command> Parse::getCommandList(){
 	queue<Command> parsedQueue;
 	vector<string> subVector;
 	string connector;
-	for (unsigned i = 0; i < vStr.size(); ++i) {
-		if (vStr.at(i) != "||" || vStr.at(i) != "&&" || vStr.at(i) != ";") {
-			subVector.push_back(vStr.at(i));
+	for (unsigned i = 0; i < vLineInput.size(); ++i) {
+		if (vLineInput.at(i) != "||" || vLineInput.at(i) != "&&" || vLineInput.at(i) != ";") {
+			subVector.push_back(vLineInput.at(i));
 		}
 		else {
-            connector = vStr.at(i);
+            connector = vLineInput.at(i);
 			parsedQueue.push(Command(subVector, connector));
 			subVector.clear();
 			connector = "";
 		}
 	}
-	commandList = parsedQueue;
+	return parsedQueue;
 }
 
 void Parse::print(){
