@@ -25,20 +25,19 @@ queue<Command> Parse::getCommandList(){
 
 	for (unsigned i = 0; i < vLineInput.size(); ++i) {
 
-		if (vLineInput.at(i) != "||" || vLineInput.at(i) != "&&" || vLineInput.at(i) != ";") {
-			subVector.push_back(vLineInput.at(i));
-		}
-
-		else {
+		if (vLineInput.at(i) == "||" || vLineInput.at(i) == "&&" || vLineInput.at(i) == ";") {
 			connector = vLineInput.at(i);
 			parsedQueue.push(Command(subVector, connector));
 			subVector.clear();
 			connector = "";
 		}
+
+		else {
+			subVector.push_back(vLineInput.at(i));
+		}
 	}
 	
 	if (!subVector.empty()){  // if subVector is still filled
-        	connector = "";                   // it has no connector since its last/ only cmd
 		parsedQueue.push(Command(subVector, connector));   // add it to the queue
 	}
 	return parsedQueue;
