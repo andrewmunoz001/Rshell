@@ -24,16 +24,22 @@ int main(int argc, char* argv[]){
 
         
             Parse parsedLine(strInput);
-            printf("TOKEN LIST \n");
-            parsedLine.print();
-            printf("\n\n");
-            queue<Command> shellCmd = parsedLine.getCommandList();
-            shellCmd.front().showCommand();
+            queue<Command> cmdqueue = parsedLine.getCommandList();
+            while (!cmdqueue.empty()){
+                if (cmdqueue.size() == 1){ // only one command
+                    cmdqueue.front().executeCommand();
+                    cmdqueue.pop();  // pop it, now its empty
+                 }
+                else{
+                    if (cmdqueue.front().executeNext())
+                        cmdqueue.pop();
+                    else{
+                        cmdqueue.pop();
+                        cmdqueue.pop();
+                    }
 
-            // THIS IS ONLY FOR TESTING
-            //string testConnector = "";
-            //Command testCommand(vStr,testConnector);
-            //execute(testCommand);
+                }
+            }
         }
     
     return 0;
