@@ -17,7 +17,7 @@ int main(int argc, char* argv[]){
 	while(1){
 		string strInput;     // input from getline
 
-		printf("rshell beta $ ");
+		printf("rshell $ ");
 		getline(cin, strInput);           // get user input, put in str
 
 
