@@ -1,10 +1,7 @@
 #!/bin/bash
-#tests single commands
 
-clear
+echo 'ls; exit' | .././bin/rshell
+echo 'ls -a; exit' | .././bin/rshell
+echo 'echo Hello, this is rshell; exit' | .././bin/rshell
+echo 'ps; exit' | .././bin/rshell
 
-./../src/a.out
-echo
-ls -a
-echo "git status"
-echo "^C"
