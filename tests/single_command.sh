@@ -3,8 +3,6 @@
 
 clear
 
-./../src/a.out
-echo
-ls -a
-echo "git status"
-echo "^C"
+echo "ls -a" | ./../src/a.out
+
+echo "end"

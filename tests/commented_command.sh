@@ -4,5 +4,10 @@ clear
 
 ./../src/a.out
 
+wait
+
+
+
 echo "now rshell is open"
 
+ls
