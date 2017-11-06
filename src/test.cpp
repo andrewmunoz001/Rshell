@@ -41,9 +41,7 @@ int main(int argc, char* argv[]){
             cmdBase* orCmd = new orConnector(command1,command2);
             cmdBase* compCmd = new semiConnector (orCmd, command3); 
             */
-
-            break;
-
+            parseobject.getTree()->executeCommand();
         }
     
     return 0;

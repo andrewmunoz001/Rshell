@@ -16,7 +16,6 @@ class Parse {
     private:
         vector<string> vLineInput;
         vector<string>::iterator vIterator;
-        vector<string>::iterator last;
         cmdBase* commandTree;
     public:
         // takes input, which is unparsed, and parses it into tokens 
@@ -29,8 +28,7 @@ class Parse {
     private:
         //turns input vector of strings into a single cmdBase*; calls
 	    //itself if it hits parentheses
-	    cmdBase* turnToBase(const vector<string>&,
-            vector<string>::iterator&,vector<string>::iterator&);
+	    cmdBase* turnToBase(const vector<string>&, vector<string>::iterator&);
 
         // calls turnToBase function
 	    void buildTree();

@@ -55,10 +55,7 @@ class orConnector : public cmdComposite{
 class andConnector : public cmdComposite{
   public:
 	andConnector();
-	andConnector(cmdBase* l, cmdBase* r) {
-		left = l;
-		right = r;
-	};
+	andConnector(cmdBase* l, cmdBase* r): cmdComposite(l,r){};
 	bool executeCommand() {
 		if (this->left->executeCommand()) {
 			if (this->right->executeCommand()) {
@@ -72,10 +69,7 @@ class andConnector : public cmdComposite{
 class semiConnector : public cmdComposite{
   public:
 	semiConnector();
-	semiConnector(cmdBase* l, cmdBase* r) {
-		left =l;
-		right = r;
-	};
+	semiConnector(cmdBase* l, cmdBase* r): cmdComposite(l,r){};
 	bool executeCommand() {
 		this->left->executeCommand();
 		return this->right->executeCommand();

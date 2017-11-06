@@ -30,13 +30,11 @@ Parse::Parse(const string& strUnparsed){
     
     // iterator points to beginning
     vIterator = vLineInput.begin(); 
-    last = vLineInput.end();
     // Now start creating the tree 
-    turnToBase(vLineInput, vIterator, last);
+    commandTree = turnToBase(vLineInput, vIterator);
 }
 
-cmdBase* Parse::turnToBase(const vector<string>& sV,
-    vector<string>::iterator& vIterator, vector<string>::iterator& last){
+cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vIterator){
 
     cmdBase* rBase = 0; 
 	vector<string> commandVec;
@@ -44,18 +42,21 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,
 	while (vIterator != sV.end()) {
         if (*vIterator == "||") {
             vIterator++; // point to next string;
-            turnToBase(vLineInput, vIterator, last);
-            break;                
+            cmdBase* temp = new cmdLeaf(commandVec); // create leaf
+            rBase = new orConnector(temp, turnToBase(vLineInput,vIterator)); 
+            return rBase;
         }
         else if (*vIterator == "&&") {
             vIterator++; // point to next string;
-            turnToBase(vLineInput, vIterator, last);
-            break; 
+            cmdBase* temp = new cmdLeaf(commandVec); // create leaf
+            rBase = new andConnector(temp, turnToBase(vLineInput,vIterator)); 
+            return rBase;
         }
         else if (*vIterator == ";") {
             vIterator++; // point to next string;
-            turnToBase(vLineInput, vIterator, last);
-            break;
+            cmdBase* temp = new cmdLeaf(commandVec); // create leaf
+            rBase = new semiConnector(temp, turnToBase(vLineInput,vIterator)); 
+            return rBase;
         }
         //recursive case
         /*else if (*vIterator == "(") {
@@ -69,11 +70,8 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,
         }
 	}
     // If loop ended, commandVec is still full, make it into cmdLeaf
-    // rBase = new cmdLeaf(commandVec);
-    cout << endl;
-    for (unsigned i = 0; i < commandVec.size(); i++){
-        cout << commandVec.at(i) << " ";
-    }	
+    rBase = new cmdLeaf(commandVec);
+    
 	return rBase;
 }
 
