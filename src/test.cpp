@@ -26,9 +26,9 @@ int main(int argc, char* argv[]){
 
             string c1str1 = "ls";
             string c1connector = "||";
-            string c2str1 = "ps";
+            string c2str1 = "ls";
             string c2connector = ";";
-            string c3str1 = "exit";
+            string c3str1 = "ls";
             string c3connector = ";";
             vector<string> c1;
             vector<string> c2;
@@ -37,8 +37,12 @@ int main(int argc, char* argv[]){
             c2.push_back(c2str1);
             c3.push_back(c3str1);
             
-            cmdLeaf command1(c1);
-            if (command1.executeCommand())
+            cmdBase* command1 = new cmdLeaf(c1);
+            cmdBase* command2 = new cmdLeaf(c2);
+            cmdBase* command3 = new cmdLeaf(c3);
+            cmdBase* orCmd = new orConnector(command1,command2);
+            cmdBase* compCmd = new orConnector (orCmd, command3); 
+            if (compCmd->executeCommand())
                 cout << "Command Succeeded!";
             break;
 
