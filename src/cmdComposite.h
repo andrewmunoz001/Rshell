@@ -68,4 +68,18 @@ class andConnector : public cmdComposite{
 		return false;
 	};
 };
+
+class semiConnector : public cmdComposite{
+  public:
+	semiConnector();
+	semiConnector(cmdBase* l, cmdBase* r) {
+		left =l;
+		right = r;
+	};
+	bool executeCommand() {
+		this->left->executeCommand();
+		return this->right->executeCommand();
+	};
+};
+
 #endif
