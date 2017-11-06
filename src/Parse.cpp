@@ -33,6 +33,34 @@ Parse::Parse(const string& strUnparsed){
     buildTree();
 }
 
+cmdBase* turnToBase(vector<string> sv) {
+	cmdBase* toReturn;
+	vector<string> tempVec;
+	string temp;
+	for (int i = 0; i < sv.size(); ++i) {
+		if (sv.at(i) == "||") {
+			
+		}
+		else if (sv.at(i) == "&&") {
+			
+		}
+		else if (sv.at(i) == ";") {
+			
+		}
+		//recursive case
+		else if (sv.at(i) == "(") {
+			//find closing parenthesis (use count in case of
+			//extra opening parentheses) and call turnToBase
+			//on subVector within parentheses.
+		}
+		else {
+			tempVec.push_back(sv.at(i));
+		}
+	}
+	
+	return toReturn;
+}
+
 void Parse::buildTree(){
 }
 

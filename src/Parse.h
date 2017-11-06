@@ -23,8 +23,12 @@ class Parse {
         cmdBase* getTree(){ return commandTree; };
         //tests if tokenizer is funtioning
         void print();
+	//turns input vector of strings into a single cmdBase*; calls
+	//itself if it hits parentheses
+	cmdBase* turnToBase(vector<string>);
     private:
-        void buildTree();
+        // calls turnToBase function
+	void buildTree();
 };
 
 
