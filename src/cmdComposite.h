@@ -48,9 +48,24 @@ class orConnector : public cmdComposite{
                     return true;
                 }
                 else 
-                    return this->right->executeCommand();
-                
+                    return this->right->executeCommand();                
             };
 };
 
+class andConnector : public cmdComposite{
+  public:
+	andConnector();
+	andConnector(cmdBase* l, cmdBase* r) {
+		left = l;
+		right = r;
+	};
+	bool executeCommand() {
+		if (this->left->executeCommand()) {
+			if (this->right->executeCommand()) {
+				return true;
+			}
+		}
+		return false;
+	};
+};
 #endif
