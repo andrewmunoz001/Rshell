@@ -17,28 +17,32 @@ using namespace std;
 class cmdLeaf : public cmdBase{
     private:
         vector<string> cmdStr;
-        string connectorType;
     public:
         // Connector will be initilized to empty string, unless a connector is passed through
-        cmdLeaf(const vector<string>& iVector, const string& con){
+        cmdLeaf(const vector<string>& iVector){
             cmdStr = iVector;
-            connectorType = con;
         };
         bool executeCommand();      // executes one command
 
         void showCommand();     // shows whats in the command object, used for testing
 };
 
+// Base Composite Class
 class cmdComposite : public cmdBase{
     protected:
-        cmdBase* child;
+        cmdBase *left, *right;
     public:
         cmdComposite() : cmdBase(){};
-        cmdComposite ( cmdBase* c): child(c){};
+        cmdComposite ( cmdBase* l, cmdBase* r): left(l), right(r){};
 
-        bool executeChild() { return child->executeCommand(); };
-        bool executeCommand();
+        virtual bool executeCommand() = 0;
 };
 
+// Composite Classes
+class orConnector : public cmdComposite{
+        public:
+            orConnector(){};
+            orConnector(cmdBase *l, cmdBase *r)
+}
 
 #endif
