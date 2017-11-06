@@ -15,18 +15,16 @@ using namespace std;
 class Parse {
     private:
         vector<string> vLineInput;
-
-        queue<cmdComposite> commandList;
+        cmdBase* commandTree;
     public:
-        // takes input, which is unparsed, and parses it 
+        // takes input, which is unparsed, and parses it into tokens 
         Parse(const string& strUnparsed);
 
-        // Creates a queue of commands from the parsed vLineInput, and returns it
-        queue<cmdComponent> getCommandList();
-
-
+        cmdBase* getTree(){ return commandTree; };
         //tests if tokenizer is funtioning
         void print();
+    private:
+        void buildTree();
 };
 
 

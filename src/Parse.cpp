@@ -1,7 +1,6 @@
 #include "Parse.h"
 
 Parse::Parse(const string& strUnparsed){
-    queue<cmdComposite> commandList;
     
     //deletes # and anything past it
     string stringToParse = strUnparsed;
@@ -19,41 +18,25 @@ Parse::Parse(const string& strUnparsed){
             it != tokens.end();
             it++){
         string temp = *it;
+
         if (temp.at(temp.size() - 1) == ';'){      // seperates semicolon from string
             vLineInput.push_back(temp.substr(0, temp.size() - 1));                
             vLineInput.push_back(temp.substr(temp.size() - 1, temp.size()));
          }
+
         else
-            vLineInput.push_back(temp);        // seperates each token into vector of strings
+            vLineInput.push_back(temp);   // seperates each token into vector of strings
     }
     
     // Now start creating the objects
 
-    vector<string> subVector;
-    
-    for (unsigned i = 0; i < vLineInput.size(); i++){
-        if (vLineInput.at(i) != "||" || vLineInput.at(i) != "&&" || vLineInput.at(i) != ";"){
-           subVector.push_back(vLineInput.at(i)); 
-        }
-        else if (vLineInput.at(i) != ";"){    // this means its a connector
-           string tmpConnector;
-           tmpConnector = vLineInput.at(i);
-           cmdLeaf tmpCommand(subVector, tmpConnector);   // creates a command leaf
-           commandList.push(cmdComposite(tmpCommand));
-           subVector.clear();                      // clears the vector
-        }
-    }
+    buildTree();
+}
+
+void Parse::buildTree(){
 }
 
 
 
 
 
-// FOR TESTING. DELETE.
-void Parse::print(){
-    if (vLineInput.size() != 0){
-        for (unsigned i = 0; i < vLineInput.size(); i++){
-            cout << vLineInput.at(i) << endl;
-        }
-    }
-}
