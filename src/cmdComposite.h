@@ -42,7 +42,15 @@ class cmdComposite : public cmdBase{
 class orConnector : public cmdComposite{
         public:
             orConnector(){};
-            orConnector(cmdBase *l, cmdBase *r)
-}
+            orConnector(cmdBase *l, cmdBase *r) : cmdComposite(l, r){};
+            bool executeCommand(){
+                if (this->left->executeCommand()){
+                    return true;
+                }
+                else 
+                    return this->right->executeCommand();
+                
+            };
+};
 
 #endif

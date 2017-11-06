@@ -8,7 +8,7 @@
 
 #include <queue>
 
-#include "Parse.h"
+//#include "Parse.h"
 #include "cmdComponent.h"
 #include "cmdComposite.h"
 
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
             printf("rshell beta $ ");
             getline(cin, strInput);           // get user input, put in str
 
-            string c1str1 = "lss";
+            string c1str1 = "ls";
             string c1connector = "||";
             string c2str1 = "ps";
             string c2connector = ";";
@@ -36,9 +36,11 @@ int main(int argc, char* argv[]){
             c1.push_back(c1str1);
             c2.push_back(c2str1);
             c3.push_back(c3str1);
-            Parse parseLine(strInput);
-            parseLine.print();
-
+            
+            cmdLeaf command1(c1);
+            if (command1.executeCommand())
+                cout << "Command Succeeded!";
+            break;
 
         }
     
