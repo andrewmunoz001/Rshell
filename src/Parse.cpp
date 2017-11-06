@@ -28,37 +28,53 @@ Parse::Parse(const string& strUnparsed){
             vLineInput.push_back(temp);   // seperates each token into vector of strings
     }
     
-    // Now start creating the objects
-
-    buildTree();
+    // iterator points to beginning
+    vIterator = vLineInput.begin(); 
+    last = vLineInput.end();
+    // Now start creating the tree 
+    turnToBase(vLineInput, vIterator, last);
 }
 
-cmdBase* turnToBase(vector<string> sv) {
-	cmdBase* toReturn;
-	vector<string> tempVec;
-	string temp;
-	for (int i = 0; i < sv.size(); ++i) {
-		if (sv.at(i) == "||") {
-			
-		}
-		else if (sv.at(i) == "&&") {
-			
-		}
-		else if (sv.at(i) == ";") {
-			
-		}
-		//recursive case
-		else if (sv.at(i) == "(") {
-			//find closing parenthesis (use count in case of
-			//extra opening parentheses) and call turnToBase
-			//on subVector within parentheses.
-		}
-		else {
-			tempVec.push_back(sv.at(i));
-		}
+cmdBase* Parse::turnToBase(const vector<string>& sV,
+    vector<string>::iterator& vIterator, vector<string>::iterator& last){
+
+    cmdBase* rBase = 0; 
+	vector<string> commandVec;
+
+	while (vIterator != sV.end()) {
+        if (*vIterator == "||") {
+            vIterator++; // point to next string;
+            turnToBase(vLineInput, vIterator, last);
+            break;                
+        }
+        else if (*vIterator == "&&") {
+            vIterator++; // point to next string;
+            turnToBase(vLineInput, vIterator, last);
+            break; 
+        }
+        else if (*vIterator == ";") {
+            vIterator++; // point to next string;
+            turnToBase(vLineInput, vIterator, last);
+            break;
+        }
+        //recursive case
+        /*else if (*vIterator == "(") {
+            //find closing parenthesis (use count in case of
+            //extra opening parentheses) and call turnToBase
+            //on subVector within parentheses.
+        }*/
+        else {
+            commandVec.push_back(*vIterator);
+            vIterator++;
+        }
 	}
-	
-	return toReturn;
+    // If loop ended, commandVec is still full, make it into cmdLeaf
+    // rBase = new cmdLeaf(commandVec);
+    cout << endl;
+    for (unsigned i = 0; i < commandVec.size(); i++){
+        cout << commandVec.at(i) << " ";
+    }	
+	return rBase;
 }
 
 void Parse::buildTree(){

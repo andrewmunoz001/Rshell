@@ -23,8 +23,9 @@ int main(int argc, char* argv[]){
 
             printf("rshell beta $ ");
             getline(cin, strInput);           // get user input, put in str
+            Parse parseobject(strInput);
 
-            string c1str1 = "ls";
+           /* string c1str1 = "ls";
             string c2str1 = "lss";
             string c3str1 = "ps";
             vector<string> c1;
@@ -39,6 +40,7 @@ int main(int argc, char* argv[]){
             cmdBase* command3 = new cmdLeaf(c3);
             cmdBase* orCmd = new orConnector(command1,command2);
             cmdBase* compCmd = new semiConnector (orCmd, command3); 
+            */
 
             break;
 
