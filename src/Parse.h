@@ -1,9 +1,11 @@
 #ifndef PARSE_H
 #define PARSE_H
+
 #include <sstream>
 #include <string>
 #include <queue>
-#include "command.h"
+#include "cmdComponent.h"
+#include "cmdComposite.h"
 #include <boost/tokenizer.hpp>
 #include <iostream>
 
@@ -14,13 +16,13 @@ class Parse {
     private:
         vector<string> vLineInput;
 
-        queue<Command> commandList;
+        queue<cmdComposite> commandList;
     public:
         // takes input, which is unparsed, and parses it 
         Parse(const string& strUnparsed);
 
         // Creates a queue of commands from the parsed vLineInput, and returns it
-        queue<Command> getCommandList();
+        queue<cmdComponent> getCommandList();
 
 
         //tests if tokenizer is funtioning

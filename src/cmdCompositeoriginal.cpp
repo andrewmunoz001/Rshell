@@ -1,20 +1,20 @@
-#include "command.h"
+#include "cmdComposite.h"
 
 
 #include <iostream>
 using namespace std;
 
-Command::Command(const vector<string>& iVector, const string& con = ""){
+cmdLeaf::cmdLeaf(const vector<string>& iVector, const string& con = ""){
     cmdStr = iVector;            // copies value of vector into cmdStr Vector
     connectorType = con;         // sets the connector type for the command
 }
 
-vector<string> Command::getCmdStr(){
+vector<string> cmdLeaf::getCmdStr(){
     vector<string> rStr = cmdStr;
     return rStr;
 }
 
-bool Command::executeCommand(){
+bool cmdLeaf::executeCommand(){
     unsigned elements = cmdStr.size();
     int returnStatus;
 
@@ -50,16 +50,25 @@ bool Command::executeCommand(){
         int statval;
         waitpid(-1, &statval, 0);     // wait for child to be done
         returnStatus = WEXITSTATUS(statval);
-        if (returnStatus == 111)
-            return false;          // statement did NOT execute
-        else
-            return true;            // no error in execvp, statement executed 
+        if (returnStatus == 111){
+            if (connectorType == "||")
+                return false;       // dont execute next command
+            else if (connectorType == "&&"){
+                return true;        // execute next command
+            }
+        }
+        else{
+            if (connectorType == "||")
+                return true;       // execute next comand
+            else if (connectorType == "&&")
+                return false;      // dont execute next command
+        }
     }
 
     return false;
 }
 
-bool Command::executeNext(){
+bool cmdLeaf::executeNext(){
     if (connectorType  == "||"){     // logic for "||"
         if (executeCommand())  
             return false;     // statement executed, no need to execute the next command
@@ -79,7 +88,7 @@ bool Command::executeNext(){
 
 }
 
-void Command::showCommand(){
+void cmdLeaf::showCommand(){
     cout << endl << "arg list: ";
     for (unsigned i = 0; i < cmdStr.size(); i++){
         cout << cmdStr.at(i) << " ";

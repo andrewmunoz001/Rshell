@@ -11,34 +11,75 @@
 using namespace boost;
 using namespace std;
 
+void execute(Command& );
 
 int main(int argc, char* argv[]){
 
-	while(1){
-		string strInput;     // input from getline
+        while(1){
+            string strInput;     // input from getline
 
-		printf("rshell $ ");
-		getline(cin, strInput);           // get user input, put in str
+            printf("rshell beta $ ");
+            getline(cin, strInput);           // get user input, put in str
 
 
+        
+            Parse parsedLine(strInput);
+            queue<Command> cmdqueue = parsedLine.getCommandList();
 
-		Parse parsedLine(strInput);
-		queue<Command> cmdqueue = parsedLine.getCommandList();
-		while (!cmdqueue.empty()){
-			if (cmdqueue.size() == 1){ // only one command
-				cmdqueue.front().executeCommand();
-				cmdqueue.pop();  // pop it, now its empty
-			}
-			else{
-				if (cmdqueue.front().executeNext()) {
-					cmdqueue.pop();
-				}
-				else {
-					cmdqueue.pop();
-					cmdqueue.pop();
-				}
-			}
-		}
-	}
-	return 0;
+            while (!cmdqueue.empty()){
+                if (cmdqueue.size() == 1){
+                    cmdqueue.front().executeCommand();
+                    break;
+                }
+                if (cmdqueue.front().executeCommand()){
+                    cmdqueue.pop();
+                    cmdqueue.pop();
+                }
+                else{
+                    cmdqueue.pop();
+                }
+            }
+        }
+    
+    return 0;
+}
+
+
+void execute(Command& inCmd){
+    vector<string> execVector = inCmd.getCmdStr();
+    unsigned elements = execVector.size();
+
+    // Exit function
+    if (execVector.at(0) == "exit"){
+        if (execVector.size() != 1){
+            printf("rshell: Error, too many arguments for exit!\n");
+            return;
+        }
+        else
+            exit(0);       // terminate normally    
+    }
+    
+    char** args = new char*[elements + 1];       // needs 1 extra for the NULL char*
+
+    for (unsigned i = 0; i < elements; i++){     // fill up char array with the arguments
+        args[i] = (char*)(execVector.at(i).c_str());
+    }
+    args[elements] = NULL;         // make sure last element is set to null
+
+
+    pid_t pid = fork();                    // fork value set to pid, of type pid_t
+
+    if (pid < 0){   // if pid < 0, error in forking
+        perror("ForkFailure");
+    }
+    if (pid == 0){  // if child process
+        if (execvp(args[0], args) == -1){     // execvp(char* cmd, char* arg[])
+        perror ("exec");
+        }
+        exit(1);
+    }
+    if (pid > 0){    // parent process
+        wait(NULL);
+    }
+    delete [] args;       // make sure to deallocate the memory
 }
