@@ -8,7 +8,7 @@ OBJECTS = $(SOURCES: .cpp = .o)
 
 all:
 	[ ! -d ./bin  ] && mkdir -p ./bin
-	$(CC) $(CC_FLAGS) $(SRC)shell.cpp $(SRC)command.cpp $(SRC)Parse.cpp -o $(EXEC) 
+	$(CC) $(CC_FLAGS) $(SRC)shell.cpp $(SRC)cmdComposite.cpp $(SRC)Parse.cpp -o $(EXEC) 
 
 rshell:
 	all
