@@ -8,6 +8,7 @@
 #include "cmdComposite.h"
 #include <boost/tokenizer.hpp>
 #include <iostream>
+#include <algorithm> // reverse()
 
 using namespace boost;
 using namespace std;

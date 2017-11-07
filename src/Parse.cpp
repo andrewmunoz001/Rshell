@@ -29,8 +29,7 @@ Parse::Parse(const string& strUnparsed){
     }
     
     // iterator points to beginning
-    vIterator = vLineInput.begin(); 
-    // Now start creating the tree 
+    vIterator = vLineInput.end(); 
     commandTree = turnToBase(vLineInput, vIterator);
 }
 
@@ -39,23 +38,24 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vI
     cmdBase* rBase = 0; 
 	vector<string> commandVec;
 
-	while (vIterator != sV.end()) {
+	while (vIterator != sV.begin()) {
+            vIterator--;
         if (*vIterator == "||") {
-            vIterator++; // point to next string;
-            cmdBase* temp = new cmdLeaf(commandVec); // create leaf
-            rBase = new orConnector(temp, turnToBase(vLineInput,vIterator)); 
+            reverse(commandVec.begin(), commandVec.end());
+            cmdBase* right = new cmdLeaf(commandVec); // create leaf
+            rBase = new orConnector(turnToBase(vLineInput,vIterator), right); 
             return rBase;
         }
         else if (*vIterator == "&&") {
-            vIterator++; // point to next string;
-            cmdBase* temp = new cmdLeaf(commandVec); // create leaf
-            rBase = new andConnector(temp, turnToBase(vLineInput,vIterator)); 
+            reverse(commandVec.begin(), commandVec.end());
+            cmdBase* right = new cmdLeaf(commandVec); // create leaf
+            rBase = new andConnector(turnToBase(vLineInput,vIterator), right); 
             return rBase;
         }
         else if (*vIterator == ";") {
-            vIterator++; // point to next string;
-            cmdBase* temp = new cmdLeaf(commandVec); // create leaf
-            rBase = new semiConnector(temp, turnToBase(vLineInput,vIterator)); 
+            reverse(commandVec.begin(), commandVec.end());
+            cmdBase* right = new cmdLeaf(commandVec); // create leaf
+            rBase = new semiConnector(turnToBase(vLineInput,vIterator), right); 
             return rBase;
         }
         //recursive case
@@ -65,13 +65,16 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vI
             //on subVector within parentheses.
         }*/
         else {
+            // If it isn't a connector, it must be a command arg. Build the vector
             commandVec.push_back(*vIterator);
-            vIterator++;
         }
 	}
+
     // If loop ended, commandVec is still full, make it into cmdLeaf
+    // since the vector was built backwards, we have to flip before creating an object
+    reverse(commandVec.begin(), commandVec.end());
     rBase = new cmdLeaf(commandVec);
-    
+
 	return rBase;
 }
 
