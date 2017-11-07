@@ -4,6 +4,11 @@ bool cmdLeaf::executeCommand(){
     
 	unsigned elements = cmdStr.size();
 	int returnStatus;
+    
+    if (cmdStr.size() == 0){
+        printf("rshell: Error, No such file or directory\n");
+        return false;
+    }
 
     // Exit function
     if (cmdStr.at(0) == "exit"){
