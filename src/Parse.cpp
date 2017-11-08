@@ -1,7 +1,8 @@
 #include "Parse.h"
 
 Parse::Parse(const string& strUnparsed){
-    
+    commandTree = 0; // set pointer to 0 before anything is done    
+
     //deletes # and anything past it
     string stringToParse = strUnparsed;
     for (unsigned i = 0; i < strUnparsed.size(); ++i) {
@@ -10,6 +11,7 @@ Parse::Parse(const string& strUnparsed){
              break;
          }
      }
+
     typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep(" ");          // only seperate by spaces
     tokenizer tokens(stringToParse, sep);          // seperate unparsed string into tokens
@@ -20,17 +22,34 @@ Parse::Parse(const string& strUnparsed){
         string temp = *it;
 
         if (temp.at(temp.size() - 1) == ';'){      // seperates semicolon from string
-            vLineInput.push_back(temp.substr(0, temp.size() - 1));                
-            vLineInput.push_back(temp.substr(temp.size() - 1, temp.size()));
+            vLineInput.push_back(temp.substr(0, temp.size() - 1));   // push ;
+            temp = temp.substr(temp.size() - 1, temp.size());        // redo string 
          }
-
-        else
+        
+        // seperates '(' or ')' from the string
+        //int pCount = 0; // Counts Parenthesis, if != 0 error
+        //int bCount = 0; // Counts Brackets, if != error
+        if (temp.at(0) == '('){
+            vLineInput.push_back(temp.substr(0, 1));
+            temp = temp.substr(1, temp.size());
+        }
+        if (temp.at(temp.size() - 1) == ')'){
+            vLineInput.push_back(temp.substr(0, temp.size() - 1));
+            temp = temp.substr(temp.size() - 1, temp.size());    
+        }
+        if (temp.size() != 0)
             vLineInput.push_back(temp);   // seperates each token into vector of strings
     }
     
+    // Test tokenizing 
+    
+    for (unsigned i = 0; i < vLineInput.size(); i++){
+       cout << vLineInput.at(i) << endl;
+    }
+    
     // iterator points to beginning
-    vIterator = vLineInput.end(); 
-    commandTree = turnToBase(vLineInput, vIterator);
+    // vIterator = vLineInput.end(); 
+    // commandTree = turnToBase(vLineInput, vIterator);
 }
 
 cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vIterator){
