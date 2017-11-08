@@ -64,6 +64,7 @@ bool cmdLeaf::test(){
     */
     char *arg;
     string flag;        // which type of check to perform
+    bool exists = false;    // if the file/directory exists
     if (cmdStr.size() > 3){
         printf("rshell: test: Too many arguments\n");
         return false;
@@ -78,19 +79,31 @@ bool cmdLeaf::test(){
     }
     
     if (flag != "-e" && flag != "-f" && flag != "-d"){  // checks for valid flag
-        cout << "wrong flag set bro" << endl; 
+        flag = "-e";        // invalid flag, just check if it exists
      }
     
     struct stat sb;
 
     if (stat(arg, &sb) == -1) {
         perror("test");
+        printf("(False)\n");
         return false;
     } 
+   
+        exists = true;  // file or directory exists if its made it this far 
+    if (flag == "-d" && !(S_ISDIR(sb.st_mode))){
+       exists = false; 
+    }
+    if (flag == "-f" && !(S_ISREG(sb.st_mode))){
+        exists = false; 
+    }
 
-    printf("st_mode: %o\n", sb.st_mode);
-
-    printf("\n(True)\n");
-    return true;    
+    if (exists == true){
+    printf("(True)\n");
+    }
+    else{
+    printf("(False)\n");
+    }
+    return exists;    
 } 
 

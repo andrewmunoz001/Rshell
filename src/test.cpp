@@ -24,9 +24,8 @@ int main(int argc, char* argv[]){
             printf("rshell beta $ ");
             getline(cin, strInput);           // get user input, put in str
             Parse parseobject(strInput);
-            //parseobject.getTree()->executeCommand();
+            parseobject.getTree()->executeCommand();
             
-            break;
         }
     
     return 0;
