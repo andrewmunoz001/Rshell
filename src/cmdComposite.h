@@ -9,6 +9,7 @@
 #include <unistd.h> // fork() and execvp()
 #include <sys/types.h>      // waitpid()
 #include <sys/wait.h>       // waitpid()
+#include <sys/stat.h>       // test command
 #include <stdio.h>          // perror
 #include <cstdlib>
 
@@ -17,6 +18,7 @@ using namespace std;
 class cmdLeaf : public cmdBase{
     private:
         vector<string> cmdStr;
+        bool test();
     public:
         // Connector will be initilized to empty string, unless a connector is passed through
         cmdLeaf(const vector<string>& iVector){

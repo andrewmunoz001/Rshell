@@ -1,7 +1,12 @@
 #include "cmdComposite.h"
 
 bool cmdLeaf::executeCommand(){
-    
+   
+    // check for test
+    if (cmdStr.at(0) == "test" || cmdStr.at(0) == "["){
+        return test();      // use test function
+    }
+
 	unsigned elements = cmdStr.size();
 	int returnStatus;
     
@@ -52,5 +57,40 @@ bool cmdLeaf::executeCommand(){
     return false;
  }
 
+bool cmdLeaf::test(){
+    /*  -e   checks if the file/directory exists
+        -f  checks if the file/directory exists and is a regular file
+        -d  checks if the file/directory exists and is a directory
+    */
+    char *arg;
+    string flag;        // which type of check to perform
+    if (cmdStr.size() > 3){
+        printf("rshell: test: Too many arguments\n");
+        return false;
+    }
+    else if(cmdStr.size() == 2){    
+        arg = (char*)(cmdStr.at(1).c_str());  // convert filename to cstring 
+        flag = "-e";     // no flag set, use -e
+    } 
+    else{
+        arg = (char*)(cmdStr.at(2).c_str());
+        flag = cmdStr.at(1);
+    }
+    
+    if (flag != "-e" && flag != "-f" && flag != "-d"){  // checks for valid flag
+        cout << "wrong flag set bro" << endl; 
+     }
+    
+    struct stat sb;
 
+    if (stat(arg, &sb) == -1) {
+        perror("test");
+        return false;
+    } 
+
+    printf("st_mode: %o\n", sb.st_mode);
+
+    printf("\n(True)\n");
+    return true;    
+} 
 
