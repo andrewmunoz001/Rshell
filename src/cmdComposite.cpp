@@ -48,7 +48,7 @@ bool cmdLeaf::executeCommand(){
         int statval;
         waitpid(-1, &statval, 0);     // wait for child to be done
         returnStatus = WEXITSTATUS(statval);
-        if (returnStatus == 111)
+        if (returnStatus != 0)  //return status will be 0 if executed properly
             return false;
         else
             return true;
@@ -67,6 +67,10 @@ bool cmdLeaf::test(){
     bool exists = false;    // if the file/directory exists
     if (cmdStr.size() > 3){
         printf("rshell: test: Too many arguments\n");
+        return false;
+    }
+    else if (cmdStr.size() == 1){
+        printf("rshell: test: No file path entered\n");
         return false;
     }
     else if(cmdStr.size() == 2){    
