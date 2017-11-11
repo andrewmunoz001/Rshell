@@ -14,7 +14,13 @@ int main(int argc, char* argv[]){
             printf("rshell beta $ ");
             getline(cin, strInput);           // get user input, put in str
             Parse parsedLine(strInput);       // Parse the input
-            parsedLine.getTree()->executeCommand(); // execute the command tree
+            
+            if (parsedLine.getValidity()){
+                parsedLine.getTree()->executeCommand(); // execute command tree
+            }
+            else{
+                printf("rshell: Invalid input\n");
+            }
         }
     
     return 0;
