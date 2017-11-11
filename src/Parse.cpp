@@ -1,3 +1,4 @@
+#include <string>
 #include "Parse.h"
 
 Parse::Parse(const string& strUnparsed){
@@ -28,6 +29,27 @@ Parse::Parse(const string& strUnparsed){
          }
         
         // seperates '(' or ')' from the string
+	while (temp.at(0) == '(') {
+		vLineInput.push_back("(");
+		temp.erase(0, 1);
+	}
+	if ((temp.at(temp.size()-1)) == ')') {
+		int count = 0;
+		for (int i = (temp.size()-1); i >= 0; ++i) {
+			if (temp.at(i) != ')') {
+				break;
+			}
+			else {
+				++count;
+			}
+		}
+		vLineInput.push_back(temp.substr(0, (temp.size()-1)-count));//fixme account for count
+		while (count > 0) {
+			vLineInput.push_back(")");
+			count --;
+		}
+	}
+        //
         //int pCount = 0; // Counts Parenthesis, if != 0 error
         //int bCount = 0; // Counts Brackets, if != error
         if (temp.size() != 0)
