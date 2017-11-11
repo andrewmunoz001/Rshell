@@ -57,6 +57,8 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vI
         if (*vIterator == "("){
             break;        
             }
+        if (*vIterator == "]")
+            vIterator--;
         if (*vIterator == "||") {
             if (rBase == 0){
                 reverse(commandVec.begin(), commandVec.end());
