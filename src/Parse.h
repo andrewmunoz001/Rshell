@@ -27,15 +27,11 @@ class Parse {
         cmdBase* getTree(){ return commandTree; };
         bool getValidity(){ return isvalid; };
         //tests if tokenizer is funtioning
-        void print();
 	    
     private:
         //turns input vector of strings into a single cmdBase*; calls
 	    //itself if it hits parentheses
 	    cmdBase* turnToBase(const vector<string>&, vector<string>::iterator&);
-
-        // calls turnToBase function
-	    void buildTree();
 };
 
 

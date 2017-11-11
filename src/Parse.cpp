@@ -57,14 +57,12 @@ Parse::Parse(const string& strUnparsed){
     }
     
     // Test tokenizing 
-    
-    /*
     for (unsigned i = 0; i < vLineInput.size(); i++){
        cout << vLineInput.at(i) << endl;
-    }*/
+    }
     
     // iterator points to beginning
-    isvalid = true;
+    isvalid = false;
     vIterator = vLineInput.end(); 
     commandTree = turnToBase(vLineInput, vIterator);
 }
