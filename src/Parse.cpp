@@ -44,7 +44,7 @@ Parse::Parse(const string& strUnparsed){
 			}
 		}
 		if (temp.size() > count) {
-			vLineInput.push_back(temp.substr(0, (temp.size()-1)-count));//fixme account for count
+			vLineInput.push_back(temp.substr(0, temp.size()-count));//fixme account for count
 		}
 		while (count > 0) {
 			vLineInput.push_back(")");
