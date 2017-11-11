@@ -20,13 +20,10 @@ class cmdLeaf : public cmdBase{
         vector<string> cmdStr;
         bool test();
     public:
-        // Connector will be initilized to empty string, unless a connector is passed through
         cmdLeaf(const vector<string>& iVector){
             cmdStr = iVector;
         };
         bool executeCommand();      // executes one command
-
-        void showCommand();     // shows whats in the command object, used for testing
 };
 
 // Base Composite Class
@@ -36,6 +33,16 @@ class cmdComposite : public cmdBase{
     public:
         cmdComposite() : cmdBase(){};
         cmdComposite ( cmdBase* l, cmdBase* r): left(l), right(r){};
+        ~cmdComposite(){
+            if (left != 0){
+                delete left;
+                left = 0;
+            }
+            if (right != 0){
+                delete right;
+                right = 0;
+            }
+        }
 
         virtual bool executeCommand() = 0;
 };
