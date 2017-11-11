@@ -23,11 +23,15 @@ class Parse {
     public:
         // takes input, which is unparsed, and parses it into tokens 
         Parse(const string& strUnparsed);
+        ~Parse(){
+            if (commandTree != 0){
+                delete commandTree;
+                commandTree = 0;
+            }
+        }
 
         cmdBase* getTree(){ return commandTree; };
         bool getValidity(){ return isvalid; };
-        //tests if tokenizer is funtioning
-	    
     private:
         //turns input vector of strings into a single cmdBase*; calls
 	    //itself if it hits parentheses
