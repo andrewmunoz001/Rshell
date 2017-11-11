@@ -39,12 +39,13 @@ bool cmdLeaf::executeCommand(){
     }   
     if (pid == 0){       // if child process
         if (execvp(args[0], args) == -1){   // execvp(char* cmd, char* arg[])
-            perror("exec");
+            perror("execvp");
+            delete [] args;
             exit(111);        
         }   
     }   
-
     if (pid > 0){       // parent process
+        delete [] args;
         int statval;
         waitpid(-1, &statval, 0);     // wait for child to be done
         returnStatus = WEXITSTATUS(statval);
