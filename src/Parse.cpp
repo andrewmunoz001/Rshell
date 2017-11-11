@@ -26,50 +26,55 @@ Parse::Parse(const string& strUnparsed){
 			temp = temp.substr(temp.size() - 1, temp.size());        // redo string 
 		}
 
-	// seperates '(' or ')' from the string
-	while (temp.at(0) == '(') {
-		if (temp.size() == 1) break;
-		vLineInput.push_back("(");
-		temp = temp.substr(1, temp.size()-1);
-	}
-	if (temp.size() == 0) continue;
-	if (temp.at(temp.size()-1) == ')') {
-		unsigned count = 0;
-		for (int i = (temp.size()-1); i >= 0; --i) {
-			if (temp.at(i) != ')') {
-				break;
+		// seperates '(' or ')' from the string
+		unsigned countOpen = 0;
+		while (temp.at(0) == '(') {
+			countOpen++;
+			if (temp.size() == 1) break;
+			vLineInput.push_back("(");
+			temp = temp.substr(1, temp.size()-1);
+		}
+		if (temp.size() == 0) continue;
+		unsigned countClosed = 0;
+		if (temp.at(temp.size()-1) == ')') {
+			for (int i = (temp.size()-1); i >= 0; --i) {
+				if (temp.at(i) != ')') {
+					break;
+				}
+				else {
+					++countClosed;
+				}
 			}
-			else {
-				++count;
+			if (temp.size() > countClosed) {
+				vLineInput.push_back(temp.substr(0, temp.size()-countClosed));//fixme account for count
 			}
+			//
+			while (countClosed > 0) {
+				vLineInput.push_back(")");
+				countClosed--;
+			}
+			temp = "";
 		}
-		if (temp.size() > count) {
-			vLineInput.push_back(temp.substr(0, temp.size()-count));//fixme account for count
+	        //
+	        //int pCount = 0; // Counts Parenthesis, if != 0 error
+	        //int bCount = 0; // Counts Brackets, if != error
+	        if (temp.size() != 0)
+			vLineInput.push_back(temp);   // seperates each token into vector of strings
+	
+    
+		// Test tokenizing 
+		for (unsigned i = 0; i < vLineInput.size(); i++){
+			std::cout << vLineInput.at(i) << endl;
 		}
-		while (count > 0) {
-			vLineInput.push_back(")");
-			count--;
-		}
-		temp = "";
+    
+		// iterator points to beginning
+		isvalid = false;
+		if (countClosed == countOpen)
+			isvalid = true;
+		vIterator = vLineInput.end(); 
+		commandTree = turnToBase(vLineInput, vIterator);
 	}
-        //
-        //int pCount = 0; // Counts Parenthesis, if != 0 error
-        //int bCount = 0; // Counts Brackets, if != error
-        if (temp.size() != 0)
-            vLineInput.push_back(temp);   // seperates each token into vector of strings
-    }
-    
-    // Test tokenizing 
-    for (unsigned i = 0; i < vLineInput.size(); i++){
-       cout << vLineInput.at(i) << endl;
-    }
-    
-    // iterator points to beginning
-    isvalid = false;
-    vIterator = vLineInput.end(); 
-    commandTree = turnToBase(vLineInput, vIterator);
 }
-
 cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vIterator){
 
     cmdBase* rBase = 0; 
