@@ -31,7 +31,12 @@ class Parse {
         }
 
         cmdBase* getTree(){ return commandTree; };
-        bool getValidity(){ return isvalid; };
+        bool getValidity(){ 
+            if (commandTree == 0){
+                isvalid = false;
+            }
+            return isvalid; 
+        };
     private:
         //turns input vector of strings into a single cmdBase*; calls
 	    //itself if it hits parentheses
