@@ -2,40 +2,40 @@
 #include "Parse.h"
 
 Parse::Parse(const string& strUnparsed){
-    commandTree = 0; // set pointer to 0 before anything is done    
-    isvalid = false;
+	commandTree = 0; // set pointer to 0 before anything is done    
+	isvalid = false;
 
-    //deletes # and anything past it
-    string stringToParse = strUnparsed;
-    for (unsigned i = 0; i < strUnparsed.size(); ++i) {
-         if (strUnparsed.at(i) == '#') {
-             stringToParse = strUnparsed.substr(0, i);
-             break;
-         }
-     }
-
-    typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-    boost::char_separator<char> sep(" ");          // only seperate by spaces
-    tokenizer tokens(stringToParse, sep);          // seperate unparsed string into tokens
-
-    for (tokenizer::iterator it = tokens.begin();
-            it != tokens.end();
-            it++){
-        string temp = *it;
-
-        if (temp.at(temp.size() - 1) == ';'){      // seperates semicolon from string
-            vLineInput.push_back(temp.substr(0, temp.size() - 1));   // push ;
-            temp = temp.substr(temp.size() - 1, temp.size());        // redo string 
-         }
-        
-        // seperates '(' or ')' from the string
-	while (temp.at(0) == '(') {
-		vLineInput.push_back("(");
-		temp.erase(0, 1);
+	//deletes # and anything past it
+	string stringToParse = strUnparsed;
+	for (unsigned i = 0; i < strUnparsed.size(); ++i) {
+		if (strUnparsed.at(i) == '#') {
+        		stringToParse = strUnparsed.substr(0, i);
+			break;
+		}
 	}
-	if ((temp.at(temp.size()-1)) == ')') {
-		int count = 0;
-		for (int i = (temp.size()-1); i >= 0; ++i) {
+
+	typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+	boost::char_separator<char> sep(" ");          // only seperate by spaces
+	tokenizer tokens(stringToParse, sep);          // seperate unparsed string into tokens
+
+	for (tokenizer::iterator it = tokens.begin(); it != tokens.end(); it++){
+		string temp = *it;
+
+		if (temp.at(temp.size() - 1) == ';'){      // seperates semicolon from string
+			vLineInput.push_back(temp.substr(0, temp.size() - 1));   // push ;
+			temp = temp.substr(temp.size() - 1, temp.size());        // redo string 
+		}
+
+	// seperates '(' or ')' from the string
+	while (temp.at(0) == '(') {
+		if (temp.size() == 1) break;
+		vLineInput.push_back("(");
+		temp = temp.substr(1, temp.size()-1);
+	}
+	if (temp.size() == 0) continue;
+	if (temp.at(temp.size()-1) == ')') {
+		unsigned count = 0;
+		for (int i = (temp.size()-1); i >= 0; --i) {
 			if (temp.at(i) != ')') {
 				break;
 			}
@@ -43,11 +43,14 @@ Parse::Parse(const string& strUnparsed){
 				++count;
 			}
 		}
-		vLineInput.push_back(temp.substr(0, (temp.size()-1)-count));//fixme account for count
+		if (temp.size() > count) {
+			vLineInput.push_back(temp.substr(0, (temp.size()-1)-count));//fixme account for count
+		}
 		while (count > 0) {
 			vLineInput.push_back(")");
-			count --;
+			count--;
 		}
+		temp = "";
 	}
         //
         //int pCount = 0; // Counts Parenthesis, if != 0 error
