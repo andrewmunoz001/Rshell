@@ -40,7 +40,7 @@ bool cmdLeaf::executeCommand(){
     if (pid == 0){       // if child process
         if (execvp(args[0], args) == -1){   // execvp(char* cmd, char* arg[])
             perror("execvp");
-            delete [] args;
+            //delete [] args;       // this doesnt even do anything
             exit(111);        
         }   
     }   
