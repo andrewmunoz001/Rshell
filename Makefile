@@ -1,5 +1,5 @@
 CC = g++
-CC_FLAGS = -Wall -Werror -ansi -pedantic
+CC_FLAGS = -Wall -Werror -ansi -pedantic -g
 SRC = ./src/
 BIN = ./bin/
 EXEC = $(BIN)rshell
