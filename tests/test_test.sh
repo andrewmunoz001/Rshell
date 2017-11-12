@@ -22,5 +22,14 @@ echo TEST 2: && test ../bin && echo Test 2 successful || echo TEST 2 FAILED
 echo TEST 3: && [ ../bin ] && echo Test 3 successful || echo TEST 3 FAILED 
 echo TEST 4: && [ ../Makefile ] && echo Test 4 successful || echo TEST 4 FAILED
 echo TEST 5: && [ ../idontexist ] && echo TEST 5 FAILED || echo Test 5 successful
+echo **********Testing using connectors from assignment 2************
+test idontexist || echo Or connector test SUCCESSFUL
+test ./test_test.sh && echo And connector test SUCCESSFUL
+[ idontexist ] || echo Or Connector test 2 SUCCESSFUL
+[ ./test_test.sh ] && echo And Connector Test 2 SUCCESSFUL
+test idontexist; echo semiconnector test SUCCESSFUL
+test ./test_test.sh; echo semiconnector test 2 SUCCESSFUL
+[ idontexist ]; echo semiconnector test 3 SUCCESSFUL
+[ ./test_test.sh ]; echo semiconnector test 4 SUCCESSFUL
 exit
 EOF
