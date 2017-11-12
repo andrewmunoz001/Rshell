@@ -3,10 +3,12 @@
 
 Parse::Parse(const string& strUnparsed){
 	commandTree = 0; // set pointer to 0 before anything is done    
-	isvalid = false;
+    isvalid = false;
+    bool vCheck = false;
 
 	unsigned countOpen = 0;
 	unsigned countClosed = 0;
+    unsigned semiCount = 0;
     int pCheck = 0;
 	//deletes # and anything past it
 	string stringToParse = strUnparsed;
@@ -23,10 +25,13 @@ Parse::Parse(const string& strUnparsed){
 
 	for (tokenizer::iterator it = tokens.begin(); it != tokens.end(); it++){
 		string temp = *it;
-
-		if (temp.at(temp.size() - 1) == ';'){      // seperates semicolon from string
-			vLineInput.push_back(temp.substr(0, temp.size() - 1));   // push ;
-			temp = temp.substr(temp.size() - 1, temp.size());        // redo string 
+    
+        // seperates semicolon from string
+		if (temp.at(temp.size() - 1) == ';' && temp.size() != 1){      			
+            //vLineInput.push_back(temp.substr(0, temp.size() - 1));   // push ;
+			//temp = temp.substr(temp.size() - 1, temp.size());        // redo string 
+            temp = temp.substr(0, temp.size() - 1);
+            semiCount++;
 		}
 
        
@@ -48,7 +53,7 @@ Parse::Parse(const string& strUnparsed){
 				}
 			}
 			if (temp.size() > countClosed) {
-				vLineInput.push_back(temp.substr(0, temp.size()-countClosed));//fixme account for count
+				vLineInput.push_back(temp.substr(0, temp.size()-countClosed));
 			}
 			//
 			while (countClosed > 0) {
@@ -61,8 +66,11 @@ Parse::Parse(const string& strUnparsed){
 	    
         if (temp.size() != 0)
 			vLineInput.push_back(temp);   // seperates each token into vector of strings
-	
-    } 
+        if (semiCount != 0){
+            vLineInput.push_back(";");
+            semiCount = 0;
+        }
+} 
 		// Test tokenizing 
 	for (unsigned i = 0; i < vLineInput.size(); i++){
             if (vLineInput.at(i) == "(") 
@@ -70,17 +78,18 @@ Parse::Parse(const string& strUnparsed){
             if (vLineInput.at(i) == ")")
                 pCheck--;
             if (pCheck < 0){
-                isvalid = false;
+                vCheck = true;
                 break;
             }
-			//std::cout << vLineInput.at(i) << endl;
 		}
    
         if (pCheck == 0){
             isvalid = true;
         }
-		vIterator = vLineInput.end(); 
+        if (isvalid == vCheck)
+            isvalid = false;
         if (!vLineInput.empty()){
+		    vIterator = vLineInput.end(); 
             commandTree = turnToBase(vLineInput, vIterator);
         }
 }
