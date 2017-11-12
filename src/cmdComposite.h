@@ -53,11 +53,14 @@ class orConnector : public cmdComposite{
             orConnector(){};
             orConnector(cmdBase *l, cmdBase *r) : cmdComposite(l, r){};
             bool executeCommand(){
-                if (this->left->executeCommand()){
+                if (this->left != 0 && this->left->executeCommand()){
                     return true;
                 }
-                else 
-                    return this->right->executeCommand();                
+                else if (this->right != 0 && this->right->executeCommand()){
+                    return true;
+                } 
+                else
+                    return false;
             };
 };
 
@@ -66,11 +69,11 @@ class andConnector : public cmdComposite{
 	andConnector();
 	andConnector(cmdBase* l, cmdBase* r): cmdComposite(l,r){};
 	bool executeCommand() {
-		if (this->left->executeCommand()) {
-			if (this->right->executeCommand()) {
-				return true;
-			}
-		}
+        if (this->left != 0 && this->left->executeCommand()) {
+            if (this->right != 0 && this->right->executeCommand()) {
+                return true;
+            }
+        }
 		return false;
 	};
 };
@@ -80,8 +83,14 @@ class semiConnector : public cmdComposite{
 	semiConnector();
 	semiConnector(cmdBase* l, cmdBase* r): cmdComposite(l,r){};
 	bool executeCommand() {
-		this->left->executeCommand();
-		return this->right->executeCommand();
+        if (this->left != 0){
+            this->left->executeCommand();
+        }
+        if (this->right != 0 && this->right->executeCommand()){
+            return true;
+        }
+        else
+            return false;
 	};
 };
 

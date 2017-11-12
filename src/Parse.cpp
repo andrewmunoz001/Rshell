@@ -80,7 +80,9 @@ Parse::Parse(const string& strUnparsed){
             isvalid = true;
         }
 		vIterator = vLineInput.end(); 
-		commandTree = turnToBase(vLineInput, vIterator);
+        if (!vLineInput.empty()){
+            commandTree = turnToBase(vLineInput, vIterator);
+        }
 }
 
 cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vIterator){
@@ -96,7 +98,7 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vI
         if (*vIterator == "]")
             vIterator--;
         if (*vIterator == "||") {
-            if (rBase == 0){
+            if (rBase == 0 && !commandVec.empty()){
                 reverse(commandVec.begin(), commandVec.end());
                 cmdBase* right = new cmdLeaf(commandVec); // create leaf
                 rBase = new orConnector(turnToBase(vLineInput,vIterator), right); 
@@ -108,7 +110,7 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vI
             return rBase;
         }
         else if (*vIterator == "&&") {
-            if (rBase == 0){
+            if (rBase == 0 && !commandVec.empty()){
                 reverse(commandVec.begin(), commandVec.end());
                 cmdBase* right = new cmdLeaf(commandVec); // create leaf
                 rBase = new andConnector(turnToBase(vLineInput,vIterator), right); 
@@ -120,7 +122,7 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vI
             return rBase;
         }
         else if (*vIterator == ";") {
-            if (rBase == 0){
+            if (rBase == 0 && !commandVec.empty()){
                 reverse(commandVec.begin(), commandVec.end());
                 cmdBase* right = new cmdLeaf(commandVec); // create leaf
                 rBase = new semiConnector(turnToBase(vLineInput,vIterator), right); 
