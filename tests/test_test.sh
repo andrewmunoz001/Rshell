@@ -31,5 +31,9 @@ test idontexist; echo semiconnector test SUCCESSFUL
 test ./test_test.sh; echo semiconnector test 2 SUCCESSFUL
 [ idontexist ]; echo semiconnector test 3 SUCCESSFUL
 [ ./test_test.sh ]; echo semiconnector test 4 SUCCESSFUL
+echo **************TESTS WITH SYNTAX THAT TRIES TO BREAK OUR PROGRAM***********
+echo TEST 1: && [] || [] || [    ] && echo TEST 1 FAILED || echo TEST 1 SUCCESS
+echo TEST 2: && test [  ] && echo TEST 2 FAILED || echo TEST 2 SUCCESS
+echo TEST 3: && [ test []  ] && echo TEST 3 FAILED || echo TEST 3 SUCCESS
 exit
 EOF
