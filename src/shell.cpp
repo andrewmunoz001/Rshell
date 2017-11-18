@@ -16,7 +16,9 @@ int main(int argc, char* argv[]){
             Parse parsedLine(strInput);       // Parse the input
             
             if (parsedLine.getValidity()){
-                parsedLine.getTree()->executeCommand(); // execute command tree
+                if (parsedLine.getTree() != 0)
+                    parsedLine.getTree()->executeCommand(); 
+                // execute command tree
             }
             else{
                 printf("rshell: Invalid input\n");

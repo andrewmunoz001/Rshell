@@ -33,7 +33,7 @@ class Parse {
         cmdBase* getTree(){ return commandTree; };
         bool getValidity(){ 
             if (commandTree == 0){
-                isvalid = false;
+                //isvalid = false;
             }
             return isvalid; 
         };
