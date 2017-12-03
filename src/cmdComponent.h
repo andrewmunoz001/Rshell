@@ -8,7 +8,9 @@ class cmdBase{
         cmdBase(){}
         virtual ~cmdBase(){};
             
-        virtual bool executeCommand() = 0;
+        virtual bool executeCommand(int fdin = 0, int fdout = 1) = 0;
+        virtual bool ispipe() = 0;
+        virtual string getfile() = 0;
 };
 
 #endif

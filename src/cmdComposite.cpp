@@ -1,6 +1,6 @@
 #include "cmdComposite.h"
 
-bool cmdLeaf::executeCommand(){
+bool cmdLeaf::executeCommand(int fdin, int fdout){
    
     // check for test
     if (cmdStr.at(0) == "test" || cmdStr.at(0) == "["){
@@ -38,6 +38,14 @@ bool cmdLeaf::executeCommand(){
         perror("ForkFailure");
     }   
     if (pid == 0){       // if child process
+        if (dup2(fdin, 0) == -1){
+            perror("dup");
+            exit(1);
+        }
+        if (dup2(fdout, 1) == -1){
+            perror("dup");
+            exit(1);
+        }
         if (execvp(args[0], args) == -1){   // execvp(char* cmd, char* arg[])
             perror("execvp");
             //delete [] args;       // this doesnt even do anything
@@ -47,7 +55,7 @@ bool cmdLeaf::executeCommand(){
     if (pid > 0){       // parent process
         delete [] args;
         int statval;
-        waitpid(-1, &statval, 0);     // wait for child to be done
+        waitpid(pid, &statval, 0);     // wait for child to be done
         returnStatus = WEXITSTATUS(statval);
         if (returnStatus != 0)  //return status will be 0 if executed properly
             return false;
@@ -111,4 +119,68 @@ bool cmdLeaf::test(){
     }
     return exists;    
 } 
+
+/*     **** PIPE DEFINITIONS ****    */
+pipeConnector::pipeConnector(cmdBase *l, cmdBase *r) : redirect(l, r)
+{}
+
+bool pipeConnector::executeCommand(int fdin, int fdout){
+    /*  execute left side of pipe   */
+    if (left->ispipe()){
+        left->executeCommand();
+    }
+    /*  execute right side of pipe  */
+    return true;
+}
+
+/*  **** REDIRECTION DEFINITIONS **** */
+
+/*                          ***** "<" *****                             */
+inputConnector::inputConnector(cmdBase *l, cmdBase *r) : redirect(l,r){
+    file[0] = (char*)(right->getfile()).c_str();
+    file[1] = NULL;
+}
+
+bool inputConnector::executeCommand(int fdin, int fdout){
+    return true;
+}
+
+
+/*                      ***** ">" *****                              */
+outputConnector::outputConnector(cmdBase *l, cmdBase *r) : redirect(l,r){
+}
+
+bool outputConnector::executeCommand(int fdin, int fdout){
+    
+    mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;    // sets permissions
+    int output = open((char*)(right->getfile()).c_str(), O_WRONLY | O_CREAT, mode);      
+    // opens the file
+    if (output < 0){ 
+        perror("Open file");
+        return false;
+    }   
+ 
+    left->executeCommand(fdin, output);
+    return true;
+}
+
+
+/*                  ***** ">>" *****                                */
+appendConnector::appendConnector(cmdBase *l, cmdBase *r) : redirect(l,r){
+}
+
+bool appendConnector::executeCommand(int fdin, int fdout){
+    mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;    // sets permissions
+    int output = open((char*)(right->getfile()).c_str(), 
+    O_WRONLY | O_APPEND | O_CREAT, mode);      
+    // opens the file
+    if (output < 0){ 
+        perror("Open file");
+        return false;
+    }   
+ 
+    left->executeCommand(fdin, output);
+    return true;
+}
+
 

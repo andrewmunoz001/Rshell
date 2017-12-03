@@ -188,6 +188,59 @@ cmdBase* Parse::turnToBase(const vector<string>& sV,vector<string>::iterator& vI
 			}
 			return rBase;
 		}
+        /*  Pipe Cases... this is ugly i know   */
+        else if (*vIterator == "|") {
+            if (rBase == 0 && !commandVec.empty()){
+                reverse(commandVec.begin(), commandVec.end());
+                cmdBase* right = new cmdLeaf(commandVec); // create leaf
+                rBase = new pipeConnector(turnToBase(vLineInput,vIterator), right); 
+			}
+			else{
+				cmdBase* temp = rBase;
+				rBase = new pipeConnector(turnToBase(vLineInput, vIterator), temp);
+			}
+			return rBase;
+		}
+        else if (*vIterator == "<") {
+            if (rBase == 0 && !commandVec.empty()){
+                reverse(commandVec.begin(), commandVec.end());
+                cmdBase* right = new cmdLeaf(commandVec); // create leaf
+                rBase = new inputConnector(turnToBase(vLineInput,vIterator), right); 
+			}
+			else{
+				cmdBase* temp = rBase;
+				rBase = new inputConnector(turnToBase(vLineInput, vIterator), temp);
+			}
+			return rBase;
+		}
+        else if (*vIterator == ">>") {
+            if (rBase == 0 && !commandVec.empty()){
+                reverse(commandVec.begin(), commandVec.end());
+                cmdBase* right = new cmdLeaf(commandVec); // create leaf
+                rBase = new appendConnector(turnToBase(vLineInput,vIterator), right); 
+			}
+			else{
+				cmdBase* temp = rBase;
+				rBase = new appendConnector(turnToBase(vLineInput, vIterator), temp);
+			}
+			return rBase;
+		}
+        else if (*vIterator == ">") {
+            if (rBase == 0 && !commandVec.empty()){
+                reverse(commandVec.begin(), commandVec.end());
+                cmdBase* right = new cmdLeaf(commandVec); // create leaf
+                rBase = new outputConnector(turnToBase(vLineInput,vIterator), right); 
+			}
+			else{
+				cmdBase* temp = rBase;
+				rBase = new outputConnector(turnToBase(vLineInput, vIterator), temp);
+			}
+			return rBase;
+		}
+
+
+
+
 		//recursive case
 		else if (*vIterator == ")") {
 			//find opening parenthesis 
