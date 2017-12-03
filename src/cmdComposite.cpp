@@ -120,29 +120,37 @@ bool cmdLeaf::test(){
     return exists;    
 } 
 
-/*     **** PIPE DEFINITIONS ****    */
+/*     **** PIPE DEFINITION ****    */
+
 pipeConnector::pipeConnector(cmdBase *l, cmdBase *r) : redirect(l, r)
 {}
 
 bool pipeConnector::executeCommand(int fdin, int fdout){
     /*  execute left side of pipe   */
-    if (left->ispipe()){
-        left->executeCommand();
-    }
+	int p[2];
+	pipe(p);	
+
+	left->executeCommand(fdin, p[1]);
+	close(p[1]);
     /*  execute right side of pipe  */
-    return true;
+	return right->executeCommand(p[0], fdout );
+	close(p[0]);
 }
 
 /*  **** REDIRECTION DEFINITIONS **** */
 
 /*                          ***** "<" *****                             */
 inputConnector::inputConnector(cmdBase *l, cmdBase *r) : redirect(l,r){
-    file[0] = (char*)(right->getfile()).c_str();
-    file[1] = NULL;
 }
 
 bool inputConnector::executeCommand(int fdin, int fdout){
-    return true;
+	int input;
+    input = open((char*)(right->getfile()).c_str(), O_RDONLY);
+    if (input < 0){ 
+        perror("Input");
+        return false;
+    } 
+	return left->executeCommand(input, fdout);
 }
 
 
@@ -156,12 +164,11 @@ bool outputConnector::executeCommand(int fdin, int fdout){
     int output = open((char*)(right->getfile()).c_str(), O_WRONLY | O_CREAT, mode);      
     // opens the file
     if (output < 0){ 
-        perror("Open file");
+        perror("Output");
         return false;
     }   
  
-    left->executeCommand(fdin, output);
-    return true;
+    return left->executeCommand(fdin, output);
 }
 
 
@@ -179,8 +186,7 @@ bool appendConnector::executeCommand(int fdin, int fdout){
         return false;
     }   
  
-    left->executeCommand(fdin, output);
-    return true;
+    return left->executeCommand(fdin, output);
 }
 
 
