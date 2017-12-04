@@ -47,10 +47,10 @@ Parse::Parse(const string& strUnparsed){
 				temp = "";
 			}
 			if (standby != "")
-				vLineInput.push_back(standby);
+				vLineInput.push_back(standby.substr(1, standby.size()-2));
 		}
 		else if (countQuotes(temp) % 2 == 0 && countQuotes(temp) > 0) {
-			vLineInput.push_back(temp);
+			vLineInput.push_back(temp.substr(1, temp.size()-2)); //removes first and last char
 			temp = "";
 		}
 	//Parse Comments(#)
