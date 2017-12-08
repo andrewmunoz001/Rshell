@@ -120,7 +120,7 @@ class orConnector : public cmdComposite{
             orConnector(){};
             orConnector(cmdBase *l, cmdBase *r) : cmdComposite(l, r){};
             bool executeCommand(int fdin = 0, int fdout = 1){
-                if (this->left != 0 && this->left->executeCommand()){
+                if (this->left != 0 && this->left->executeCommand(fdin, fdout)){
                     return true;
                 }
                 else if (this->right != 0 && this->right->executeCommand(fdin, fdout)){
