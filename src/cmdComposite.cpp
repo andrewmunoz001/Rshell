@@ -128,13 +128,15 @@ pipeConnector::pipeConnector(cmdBase *l, cmdBase *r) : redirect(l, r)
 bool pipeConnector::executeCommand(int fdin, int fdout){
     /*  execute left side of pipe   */
 	int p[2];
+    bool ret = false;
 	pipe(p);	
 
-	left->executeCommand(fdin, p[1]);
-	close(p[1]);
-    /*  execute right side of pipe  */
-	return right->executeCommand(p[0], fdout );
+    if (left->executeCommand(fdin, p[1])){
+	    close(p[1]);
+	    ret = right->executeCommand(p[0], fdout );
+    }
 	close(p[0]);
+    return ret;
 }
 
 /*  **** REDIRECTION DEFINITIONS **** */
