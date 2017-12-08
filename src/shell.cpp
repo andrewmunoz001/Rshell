@@ -11,7 +11,8 @@ int main(int argc, char* argv[]){
         while(1){
             string strInput;     // input from getline
 
-            printf("rshell $ ");
+            //printf("rshell $ ");
+            printf("\033[1;31mrshell $ \033[0m");
             getline(cin, strInput);           // get user input, put in str
             Parse parsedLine(strInput);       // Parse the input
             
