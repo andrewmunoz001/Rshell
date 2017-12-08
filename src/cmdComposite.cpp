@@ -160,15 +160,18 @@ outputConnector::outputConnector(cmdBase *l, cmdBase *r) : redirect(l,r){
 
 bool outputConnector::executeCommand(int fdin, int fdout){
     
+    bool ret;
     mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;    // sets permissions
-    int output = open((char*)(right->getfile()).c_str(), O_WRONLY | O_CREAT, mode);      
+    int output = open((char*)(right->getfile()).c_str(), O_WRONLY | O_CREAT | O_TRUNC, mode);      
     // opens the file
     if (output < 0){ 
         perror("Output");
         return false;
     }   
- 
-    return left->executeCommand(fdin, output);
+
+    ret = left->executeCommand(fdin, output);
+    close(output);
+    return ret;
 }
 
 
@@ -179,7 +182,7 @@ appendConnector::appendConnector(cmdBase *l, cmdBase *r) : redirect(l,r){
 bool appendConnector::executeCommand(int fdin, int fdout){
     mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;    // sets permissions
     int output = open((char*)(right->getfile()).c_str(), 
-    O_WRONLY | O_APPEND | O_CREAT, mode);      
+    O_WRONLY | O_APPEND | O_CREAT , mode);      
     // opens the file
     if (output < 0){ 
         perror("Open file");
