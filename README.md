@@ -23,7 +23,10 @@ Here is an example:
 
 rshell $ cat < input | grep "word" | wc > output
 
-// What this code does, is redirect the input of whatever is inside the file named "input" and redirects it to the cat program. After that, a pipe is used to search for the word "word". Another pipe is used to get the word count of that result, then finally, the output of all of that combined is sent to the file named "output".
+/* What this code does, is redirect the input of whatever is inside the file named 
+"input" and redirects it to the cat program. After that, a pipe is used to search for 
+the word "word". Another pipe is used to get the word count of that result, 
+then finally, the output of all of that combined is sent to the file named "output". */
 
 
 ```
