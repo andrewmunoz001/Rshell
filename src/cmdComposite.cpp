@@ -129,13 +129,22 @@ bool pipeConnector::executeCommand(int fdin, int fdout){
     /*  execute left side of pipe   */
 	int p[2];
     bool ret = false;
-	pipe(p);	
+    if (pipe(p) < 0){
+        perror("pipe");
+        return false;
+    }
 
     if (left->executeCommand(fdin, p[1])){
-	    close(p[1]);
+        if (close(p[1]) < 0){
+            perror("close");
+            return false;
+        }
 	    ret = right->executeCommand(p[0], fdout );
     }
-	close(p[0]);
+    if (close(p[0]) < 0){
+        perror("close");
+        return false;
+    }
     return ret;
 }
 
@@ -172,7 +181,10 @@ bool outputConnector::executeCommand(int fdin, int fdout){
     }   
 
     ret = left->executeCommand(fdin, output);
-    close(output);
+    if (close(output) < 0){
+        perror("close");
+        return false;
+    }
     return ret;
 }
 

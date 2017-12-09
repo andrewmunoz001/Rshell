@@ -24,10 +24,13 @@ echo "Test 2: ls | grep pipe | wc"
 ls | grep pipe | wc
 
 echo "***** Tests that implement everything   ******"
-echo "Test 1: cat < pipe_test.sh | grep pipe | sort | tr a-z A-Z > test1output"
-cat < pipe_test.sh | grep pipe | sort | tr a-z A-Z > test1output
-echo "Test 2: ls | tr a-z A-Z | wc > test2output"
-ls | tr a-z A-Z | wc > test2output
+rm -rf pipetest
+mkdir pipetest
+
+echo "Test 1: cat < pipe_test.sh | grep pipe | sort | tr a-z A-Z > ./pipetest/test1output"
+cat < pipe_test.sh | grep pipe | sort | tr a-z A-Z > ./pipetest/test1output
+echo "Test 2: ls | tr a-z A-Z | wc > ./pipetest/test2output"
+ls | tr a-z A-Z | wc > ./pipetest/test2output
 
 exit
 EOF
