@@ -12,31 +12,19 @@ The main functions of the program are as follows:
 5) Has its own "exit" command to exit the shell
 6) Any input after a # is treated as a comment
 
-As of assignment 3 our shell now has these features:
-1) The ability to test if a file exists. This is used with either "test (flag) (filename)" or "[ (flag) (filename) ]" formats. There are 3 flags the user can input: -e, which checks if the file or directory exists. -f, which checks if the file/directory exists and is a regular file. -d, which checks if the file/directory exists and is a directory. If the user does not specify a flag, the -e flag is used by default.
-2) Using the test command (in either format) prints out "(True)" or "(False)", depending on the result of the test.
-3) Precedence operators are now supported, also with support for nested operations. For example: 
+As of assignment 4 our shell now has these features:
+1) The ability to redirect input and output
+2) The ability to append to an existing file
+3) The ability to pipe multiple programs
+4) The ability to use all of the above mentioned features, together.
 
+Here is an example: 
 ```c++
 
-rshell $ echo A && echo B || echo C && echo D
+rshell $ cat < input | grep "word" | wc > output
 
-output: A
-B
-D
+// What this code does, is redirect the input of whatever is inside the file named "input" and redirects it to the cat program. After that, a pipe is used to search for the word "word". Another pipe is used to get the word count of that result, then finally, the output of all of that combined is sent to the file named "output".
 
-rshell $ (echo A && echo B) || (echo C && echo D)
-
-output: A
-B
-
-//For nested parenthesis:
-
-rshell & (echo 1 && (echo 2 || echo 3) && echo 4) || echo 5
-
-output: 1
-2
-4
 
 ```
 
@@ -54,4 +42,4 @@ Our method of building our command tree was through using recursion. After a use
 
 2) Some input leads to undefined behavior, such as if the user only input "]". This leads to the program crashing with a Segmentation fault.
 
-
+3) Multiple output redirection doesn't perform in the correct way. For example, in bash ls > a > b > c, will have files a and b be empty, and file c have all the output. However in our program, all of the output will be in file a, with files b and c being empty.
